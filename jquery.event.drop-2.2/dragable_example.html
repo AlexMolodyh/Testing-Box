@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!--Import jQuery before materialize.js-->
+    <script src="http://threedubmedia.com/inc/js/jquery-1.7.2.js"></script>
+
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+              
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="jquery.event.drag-2.2.js"></script>
+    <script type="text/javascript" src="jquery.event.drop-2.2.js"></script>
+
+</head>
+
+<body>
+
+        <script type="text/javascript">
+            jQuery(function($){
+                $( document )
+                    .drag("start",function( ev, dd ){
+                        return $('<div class="selection" />')
+                            .css('opacity', .65 )
+                            .appendTo( document.body );
+                    })
+                    .drag(function( ev, dd ){
+                        $( dd.proxy ).css({
+                            top: Math.min( ev.pageY, dd.startY ),
+                            left: Math.min( ev.pageX, dd.startX ),
+                            height: Math.abs( ev.pageY - dd.startY ),
+                            width: Math.abs( ev.pageX - dd.startX )
+                        });
+                    })
+                    .drag("end",function( ev, dd ){
+                        $( dd.proxy ).remove();
+                    });
+                $('.drop')
+                    .drop("start",function(){
+                        $( this ).addClass("active");
+                    })
+                    .drop(function( ev, dd ){
+                        $( this ).toggleClass("dropped");
+                    })
+                    .drop("end",function(){
+                        $( this ).removeClass("active");
+                    });
+                $.drop({ multi: true });	
+            });
+
+            $('.drop').on('click', function(x){
+                console.log("x is: " + x);
+            });
+
+            function clicked(e)
+            {
+                console.log("clicked this: " + e);
+                $(e).attr('dropped');
+            }
+            </script>
+
+
+    <!-- <div class="drop ">hello</div>
+    <div class="drop ">hello</div>
+    <div class="drop ">hello</div>
+    <div class="drop ">hello</div>
+    <div class="drop ">hello</div>
+    <div class="drop ">hello</div> -->
+
+    <div id="weeks">
+        <script>
+            for(var i = 0; i < 2; i++){
+                for(var j = 0; j < 20; j++){
+                    var button = '<a class="drop waves-effect waves-light btn" style="width: 20px, height: 20px" onclick="clicked(this)">' + j + '</a>';
+                    $('#weeks').append(button);
+                }
+            }   
+        </script>
+    </div>
+
+    <style type="text/css">
+        .selection {
+            position: absolute;
+            border: 1px solid #89B;
+            background: #BCE;
+            background-color: #BEC;
+            border-color: #8B9;
+            }
+        .size2 {
+            height: 118px;
+            line-height: 118px;
+            }
+        .size3 {
+            height: 178px;
+            line-height: 178px;
+            }
+        .drop {
+            float: left;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            margin: 0 5px 5px 0;
+            padding: 0;
+            text-align: center;
+            }
+        .dropped {
+            background-color: #EBC;
+            border-color: #B89;
+            }	
+        .active {  
+            background-color: #CEB;
+            border-color: #9B8;
+            }
+        </style>
+        <style type="text/css" rel="stylesheet" href="site.css"></style>
+</body>
+
+</html>
